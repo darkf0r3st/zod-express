@@ -1,9 +1,26 @@
 import { Request, Response, RequestHandler } from 'express';
 import { ZodType } from 'zod';
 
-export function parsingMiddleWare<T, O>(fn: (input: T) => Promise<O>, parser: ZodType<T>): RequestHandler;
-export function parsingMiddleWare<O>(fn: () => Promise<O>): RequestHandler;
-export function parsingMiddleWare<T, O>(fn: (input?: T) => Promise<O>, parser?: ZodType<T>): RequestHandler {
+type UnexpectedErrorHandler = (error: Error, req: Request, res: Response) => void
+
+export function parsingMiddleWare<T, O>(
+  fn: (input: T) => Promise<O>,
+  parser: ZodType<T>,
+  unexpectedErrorHandler?: UnexpectedErrorHandler
+): RequestHandler;
+
+export function parsingMiddleWare<O>(
+  fn: () => Promise<O>,
+  parser: undefined,
+  unexpectedErrorHandler?: UnexpectedErrorHandler
+): RequestHandler;
+
+export function parsingMiddleWare<T, O>(
+  fn: (input?: T) => Promise<O>,
+  parser: ZodType<T> | undefined,
+  unexpectedErrorHandler?: UnexpectedErrorHandler,
+
+): RequestHandler {
   return async (req: Request, res: Response) => {
     try {
       if (!parser) {
@@ -19,15 +36,12 @@ export function parsingMiddleWare<T, O>(fn: (input?: T) => Promise<O>, parser?: 
         res.status(400).send({ routeParsingError: fnParsedInput.error.issues });
       }
     } catch (error) {
-      handleUnexpectedErrorInRoute(error as Error, req);
-      res.status(500).send(error);
+      if (unexpectedErrorHandler) {
+        unexpectedErrorHandler(error as Error, req, res);
+      }
+      if (!res.headersSent) {
+        res.status(500).send(error);
+      }
     }
   };
 }
-
-// TODO: Add Implementation
-/* eslint-disable-next-line  */
-function handleUnexpectedErrorInRoute(error: Error, req: Request) {
-  throw new Error('Function not implemented.');
-}
-
