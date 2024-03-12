@@ -24,11 +24,11 @@
     "eslint-plugin-import": "2.26.0",
     "express": "4.18.3",
     "typescript": "5.4.2",
-    "typescript-eslint-language-service": "5.0.5"
+    "typescript-eslint-language-service": "5.0.5",
+    "zod": "3.22.4"
   },
   "dependencies": {
-    "lodash": "4.17.21",
-    "zod": "3.22.4"
+    "lodash": "4.17.21"
   },
   "peerDependencies": {
     "express": "^4.18.3",
