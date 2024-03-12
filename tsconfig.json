@@ -1,0 +1,16 @@
+{
+  "extends": "@tsconfig/node18/tsconfig.json",
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "strict": true,
+    "skipLibCheck": false,
+    "noUncheckedIndexedAccess": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "outDir": "./dist",
+    "declaration": true,
+    "plugins": [{
+      "name": "typescript-eslint-language-service"
+    }]    
+  }
+}
