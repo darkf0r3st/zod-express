@@ -9,6 +9,7 @@
     "resolveJsonModule": true,
     "outDir": "./dist",
     "declaration": true,
+    "noUnusedLocals": true,
     "plugins": [{
       "name": "typescript-eslint-language-service"
     }]    
