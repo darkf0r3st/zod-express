@@ -1,1 +1,1 @@
-export * from './src/zodExpressLite'
+export * from './src/zodExpressLite';
