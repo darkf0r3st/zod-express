@@ -40,4 +40,10 @@ describe('Express end to end test', () => {
     const response = await testClient.post('/users', { name: 'John', id: '12323232' });
     expect(response.status).toBe(200);
   });
+
+  it('Should return 400 when the input is invalid', async () => {
+    const response = await testClient.post('/users', { name: 'John', id: 123 },
+      { validateStatus: (status) => status === 400 });
+    expect(response.status).toBe(400);
+  });
 });
