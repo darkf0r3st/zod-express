@@ -11,7 +11,7 @@ export function parsingMiddleWare<T, O>(
 
 export function parsingMiddleWare<O>(
   fn: () => Promise<O>,
-  parser: undefined,
+  parser?: undefined,
   unexpectedErrorHandler?: UnexpectedErrorHandler
 ): RequestHandler;
 
