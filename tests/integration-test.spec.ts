@@ -47,3 +47,26 @@ describe('Express end to end test', () => {
     expect(response.status).toBe(400);
   });
 });
+
+describe('Unexpected error in handler', () => {
+
+  beforeAll(async () => {
+    shutdownServer = await initServer([faultyRoutes], serverConfig);
+  });
+
+  afterAll(async () => {
+    await shutdownServer();
+  });
+
+  const faultyRoutes = (app: Application) => {
+    app.post('/error', parsingMiddleWare(() => {
+      throw new Error('This is an unexpected error');
+    }));
+  };
+
+  it('Should return 500', async () => {
+    const response = await testClient.post('/error', { name: 'John', id: '12323232' },
+      { validateStatus: (status) => status === 500 });
+    expect(response.status).toBe(500);
+  });
+});
