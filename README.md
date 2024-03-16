@@ -1,1 +1,84 @@
-# zod-express-lite
+# Express Middleware with Zod Parsing
+
+This module provides a powerful Express middleware for input validation and parsing using [Zod](https://zod.dev). 
+It simplifies the process of ensuring that your route handlers receive correctly typed and validated data, 
+while also handling errors in a consistent manner.
+
+## Features
+
+- **Type Safety**: Leverages Zod to enforce input types, ensuring that your handlers work with data that adheres to your specifications.
+- **Error Handling**: Includes a mechanism to handle unexpected errors gracefully, as well as to report parsing errors back to the client.
+
+## Installation
+
+To use this middleware, ensure you have Express and Zod installed in your project. If not, you can install them using npm:
+
+```zsh
+npm install zod-express-lite
+```
+
+## Usage
+
+### Basic Usage
+For a route that requires input validation:
+
+```typescript
+import express from 'express';
+import { parsingMiddleWare } from './path/to/this/middleware';
+import { z } from 'zod';
+
+const app = express();
+
+app.use(express.json()); // for parsing application/json
+
+const InputSchema = z.object({
+  foo: z.string(),
+});
+type Input = z.infer<typeof InputSchema>;
+
+app.post('/your-route', parsingMiddleWare(async (input: Input) => {
+  // Your logic here, with input being already validated
+  return { message: `Received: ${input.foo}` };
+}, yourSchema));
+
+app.listen(3000, () => console.log('Server running on port 3000'));
+
+```
+
+### No validation
+
+For a simple route that doesn't require input parsing:
+
+```typescript
+import express from 'express';
+import { parsingMiddleWare } from 'zod-express-lite';
+import { z } from 'zod';
+
+const app = express();
+
+app.use(express.json()); // for parsing application/json
+
+app.post('/your-route', parsingMiddleWare(async () => {
+  // Your logic here
+  return { message: 'Success!' };
+}));
+
+app.listen(3000, () => console.log('Server running on port 3000'));
+```
+
+## Error Handling
+
+To handle unexpected errors, you can pass an optional error handler to the middleware:
+
+```typescript
+import { Request, Response } from 'express';
+
+const errorHandler = (error: Error, req: Request, res: Response) => {
+  console.error('Unexpected error:', error);
+  res.status(500).send('An unexpected error occurred');
+};
+
+// Use it as the third argument in parsingMiddleWare
+app.post('/your-route', parsingMiddleWare(handler, schema, errorHandler));
+```
+
