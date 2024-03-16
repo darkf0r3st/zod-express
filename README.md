@@ -45,6 +45,33 @@ app.listen(3000, () => console.log('Server running on port 3000'));
 
 ```
 
+### Custom validation
+
+You can also use a custom validation function to handle more complex validation logic:
+
+```typescript
+import express from 'express';
+import { parsingMiddleware } from 'zod-express-lite';
+import { z } from 'zod';
+
+const app = express();
+
+app.use(express.json()); // for parsing application/json
+
+const InputSchema = z.object({
+  foo: z.string(),
+});
+type Input = z.infer<typeof InputSchema>;
+
+const customValidation = (req: Request) => {
+  return InputSchema.safeParse(req.body);
+};
+
+app.post('/your-route', parsingMiddleware(async (input: Input) => {
+  return { message: `Received: ${input.foo}` };
+}, customValidation));
+```
+
 ### No validation
 
 For a simple route that doesn't require input parsing:

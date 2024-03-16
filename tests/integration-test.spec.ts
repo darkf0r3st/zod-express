@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { initServer } from  './test-server';
 import { parsingMiddleware } from '../src/zodExpressLite';
-import { Application } from 'express';
+import { Application, Request } from 'express';
 import z from 'zod';
 
 const serverConfig = {
@@ -68,5 +68,42 @@ describe('Unexpected error in handler', () => {
     const response = await testClient.post('/error', { name: 'John', id: '12323232' },
       { validateStatus: (status) => status === 500 });
     expect(response.status).toBe(500);
+  });
+});
+
+describe('Custom parsing function', () => {
+  beforeAll(async () => {
+    shutdownServer = await initServer([customParsingFunctionRoutes], serverConfig);
+  });
+
+  afterAll(async () => {
+    await shutdownServer();
+  });
+
+  const customParsingFunctionRoutes = (app: Application) => {
+
+    const schema = z.object({
+      age: z.number()
+    });
+    type User = z.infer<typeof schema>;
+
+    const customParsingFunction = (request: Request) => {
+      return schema.safeParse(request.body);
+    };
+
+    app.post('/custom-parsing', parsingMiddleware(async (user: User) => {
+      return { age: user.age };
+    }, customParsingFunction));
+  };
+
+  it('Should return 200', async () => {
+    const response = await testClient.post('/custom-parsing', { age: 30 });
+    expect(response.status).toBe(200);
+  });
+
+  it('Should return 400 when the input is invalid', async () => {
+    const response = await testClient.post('/custom-parsing', { age: '30' },
+      { validateStatus: (status) => status === 400 });
+    expect(response.status).toBe(400);
   });
 });
