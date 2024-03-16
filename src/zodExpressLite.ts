@@ -3,23 +3,22 @@ import { ZodType } from 'zod';
 
 type UnexpectedErrorHandler = (error: Error, req: Request, res: Response) => void
 
-export function parsingMiddleWare<T, O>(
+export function parsingMiddleware<T, O>(
   fn: (input: T) => Promise<O>,
   parser: ZodType<T>,
   unexpectedErrorHandler?: UnexpectedErrorHandler
 ): RequestHandler;
 
-export function parsingMiddleWare<O>(
+export function parsingMiddleware<O>(
   fn: () => Promise<O>,
   parser?: undefined,
   unexpectedErrorHandler?: UnexpectedErrorHandler
 ): RequestHandler;
 
-export function parsingMiddleWare<T, O>(
+export function parsingMiddleware<T, O>(
   fn: (input?: T) => Promise<O>,
   parser: ZodType<T> | undefined,
   unexpectedErrorHandler?: UnexpectedErrorHandler,
-
 ): RequestHandler {
   return async (req: Request, res: Response) => {
     try {

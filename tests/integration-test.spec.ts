@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { initServer } from  './test-server';
-import { parsingMiddleWare } from '../src/zodExpressLite';
+import { parsingMiddleware } from '../src/zodExpressLite';
 import { Application } from 'express';
 import z from 'zod';
 
@@ -24,7 +24,7 @@ const sanityTestRouteDefinition = (app: Application) => {
     return { age: 30 };
   };
 
-  app.post('/users', parsingMiddleWare(createUser, User));
+  app.post('/users', parsingMiddleware(createUser, User));
 };
 
 describe('Express end to end test', () => {
@@ -59,7 +59,7 @@ describe('Unexpected error in handler', () => {
   });
 
   const faultyRoutes = (app: Application) => {
-    app.post('/error', parsingMiddleWare(() => {
+    app.post('/error', parsingMiddleware(() => {
       throw new Error('This is an unexpected error');
     }));
   };
