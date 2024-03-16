@@ -24,7 +24,7 @@ For a route that requires input validation:
 
 ```typescript
 import express from 'express';
-import { parsingMiddleWare } from './path/to/this/middleware';
+import { parsingMiddleware } from 'zod-express-lite';
 import { z } from 'zod';
 
 const app = express();
@@ -36,10 +36,10 @@ const InputSchema = z.object({
 });
 type Input = z.infer<typeof InputSchema>;
 
-app.post('/your-route', parsingMiddleWare(async (input: Input) => {
+app.post('/your-route', parsingMiddleware(async (input: Input) => {
   // Your logic here, with input being already validated
   return { message: `Received: ${input.foo}` };
-}, yourSchema));
+}, InputSchema));
 
 app.listen(3000, () => console.log('Server running on port 3000'));
 
@@ -51,14 +51,14 @@ For a simple route that doesn't require input parsing:
 
 ```typescript
 import express from 'express';
-import { parsingMiddleWare } from 'zod-express-lite';
+import { parsingMiddleware } from 'zod-express-lite';
 import { z } from 'zod';
 
 const app = express();
 
 app.use(express.json()); // for parsing application/json
 
-app.post('/your-route', parsingMiddleWare(async () => {
+app.post('/your-route', parsingMiddleware(async () => {
   // Your logic here
   return { message: 'Success!' };
 }));
@@ -78,7 +78,7 @@ const errorHandler = (error: Error, req: Request, res: Response) => {
   res.status(500).send('An unexpected error occurred');
 };
 
-// Use it as the third argument in parsingMiddleWare
-app.post('/your-route', parsingMiddleWare(handler, schema, errorHandler));
+// Use it as the third argument in parsingMiddleware
+app.post('/your-route', parsingMiddleware(handler, schema, errorHandler));
 ```
 
