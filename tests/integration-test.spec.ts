@@ -107,3 +107,31 @@ describe('Custom parsing function', () => {
     expect(response.status).toBe(400);
   });
 });
+
+describe('Parsing of path parameters', () => {
+  beforeAll(async () => {
+    shutdownServer = await initServer([pathParamsRoutes], serverConfig);
+  });
+
+  afterAll(async () => {
+    await shutdownServer();
+  });
+
+  const pathParamsRoutes = (app: Application) => {
+    const schema = z.object({
+      id: z.string(),
+      age: z.number(),
+    });
+    type User = z.infer<typeof schema>;
+
+    app.post('/path-params/:id', parsingMiddleware(async (user: User) => {
+      return { id: user.id };
+    }, schema));
+  };
+
+  it('Should return 200', async () => {
+    const response = await testClient.post('/path-params/123', { age: 21 });
+    expect(response.status).toBe(200);
+  });
+
+});
