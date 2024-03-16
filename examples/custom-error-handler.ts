@@ -1,6 +1,6 @@
 import express from 'express';
 import z from 'zod';
-import { parsingMiddleWare } from '../src/zodExpressLite';
+import { parsingMiddleware } from '../src/zodExpressLite';
 
 const app = express();
 app.use(express.json());
@@ -18,7 +18,7 @@ async function throwAnError(dummy: Dummy): Promise<string> {
  * on an unexpected error. You can override this behavior by providing an
  * unexpectedErrorHandler function.
  */
-app.post('/get-user-name', parsingMiddleWare(throwAnError, DummySchema,
+app.post('/get-user-name', parsingMiddleware(throwAnError, DummySchema,
   (error, req, res) => {
     res.status(500).send({ message: error.message });
   }));
