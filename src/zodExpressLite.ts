@@ -27,6 +27,7 @@ export function parsingMiddleware<T, O>(
   parser: ZodType<T> | undefined | CustomParsingFunction<T>,
   unexpectedErrorHandler?: UnexpectedErrorHandler,
 ): RequestHandler {
+  _validateParser(parser);
   return async (req: Request, res: Response) => {
     try {
       if (!parser) {
@@ -52,12 +53,15 @@ export function parsingMiddleware<T, O>(
   };
 }
 
-async function _parseRequest<T>(parser: ZodType<T> | CustomParsingFunction<T>, req: Request): Promise< SafeParseReturnType<unknown, T>> {
-  if (typeof parser === 'function') {
-    return parser(req);
+function _validateParser(parser: ZodType | CustomParsingFunction<unknown> | undefined) {
+  if (parser && typeof parser !== 'function' && !(parser instanceof ZodType)) {
+    throw new Error('Parser can either by a CustomParsingFunction or a ZodType');
   }
-  if ('safeParse' in parser && typeof parser.safeParse === 'function') {
+}
+
+async function _parseRequest<T>(parser: ZodType<T> | CustomParsingFunction<T>, req: Request): Promise< SafeParseReturnType<unknown, T>> {
+  if (parser instanceof ZodType) {
     return parser.safeParse({ ...req.params, ...req.body });
   }
-  throw new Error('Parser can either by a CustomParsingFunction or a ZodType');
+  return parser(req);
 }
