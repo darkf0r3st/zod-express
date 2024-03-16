@@ -1,11 +1,18 @@
 import { Request, Response, RequestHandler } from 'express';
-import { ZodType } from 'zod';
+import { ZodType, SafeParseReturnType } from 'zod';
 
 type UnexpectedErrorHandler = (error: Error, req: Request, res: Response) => void
+type CustomParsingFunction<O> = (request: Request) => SafeParseReturnType<unknown, O>;
 
 export function parsingMiddleware<T, O>(
   fn: (input: T) => Promise<O>,
   parser: ZodType<T>,
+  unexpectedErrorHandler?: UnexpectedErrorHandler
+): RequestHandler;
+
+export function parsingMiddleware<T, O>(
+  fn: (input: T) => Promise<O>,
+  parser: CustomParsingFunction<T>,
   unexpectedErrorHandler?: UnexpectedErrorHandler
 ): RequestHandler;
 
@@ -17,7 +24,7 @@ export function parsingMiddleware<O>(
 
 export function parsingMiddleware<T, O>(
   fn: (input?: T) => Promise<O>,
-  parser: ZodType<T> | undefined,
+  parser: ZodType<T> | undefined | CustomParsingFunction<T>,
   unexpectedErrorHandler?: UnexpectedErrorHandler,
 ): RequestHandler {
   return async (req: Request, res: Response) => {
@@ -27,7 +34,7 @@ export function parsingMiddleware<T, O>(
         res.status(200).send(output);
         return;
       }
-      const fnParsedInput = parser && parser.safeParse({ ...req.params, ...req.body });
+      const fnParsedInput = await _parseRequest(parser, req);
       if (fnParsedInput && fnParsedInput.success) {
         const output = await fn(fnParsedInput.data);
         res.status(200).send(output);
@@ -43,4 +50,14 @@ export function parsingMiddleware<T, O>(
       }
     }
   };
+}
+
+async function _parseRequest<T>(parser: ZodType<T> | CustomParsingFunction<T>, req: Request): Promise< SafeParseReturnType<unknown, T>> {
+  if (typeof parser === 'function') {
+    return parser(req);
+  }
+  if ('safeParse' in parser && typeof parser.safeParse === 'function') {
+    return parser.safeParse({ ...req.params, ...req.body });
+  }
+  throw new Error('Parser can either by a CustomParsingFunction or a ZodType');
 }
