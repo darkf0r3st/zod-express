@@ -1,12 +1,12 @@
-import { Request, Response, RequestHandler } from 'express';
-import { ZodType, SafeParseReturnType } from 'zod';
+import { Request, RequestHandler, Response } from 'express';
+import { SafeParseReturnType, ZodType, ZodTypeDef } from 'zod';
 
 type UnexpectedErrorHandler = (error: Error, req: Request, res: Response) => void
 type CustomParsingFunction<O> = (request: Request) => SafeParseReturnType<unknown, O>;
 
 export function parsingMiddleware<T, O>(
   fn: (input: T) => Promise<O>,
-  parser: ZodType<T>,
+  parser: ZodType<T, ZodTypeDef, unknown>,
   unexpectedErrorHandler?: UnexpectedErrorHandler
 ): RequestHandler;
 
@@ -24,7 +24,7 @@ export function parsingMiddleware<O>(
 
 export function parsingMiddleware<T, O>(
   fn: (input?: T) => Promise<O>,
-  parser: ZodType<T> | undefined | CustomParsingFunction<T>,
+  parser: ZodType<T, ZodTypeDef, unknown> | undefined | CustomParsingFunction<T>,
   unexpectedErrorHandler?: UnexpectedErrorHandler,
 ): RequestHandler {
   _validateParser(parser);
@@ -59,7 +59,7 @@ function _validateParser(parser: ZodType | CustomParsingFunction<unknown> | unde
   }
 }
 
-async function _parseRequest<T>(parser: ZodType<T> | CustomParsingFunction<T>, req: Request): Promise< SafeParseReturnType<unknown, T>> {
+async function _parseRequest<T>(parser: ZodType<T, ZodTypeDef, unknown> | CustomParsingFunction<T>, req: Request): Promise< SafeParseReturnType<unknown, T>> {
   if (parser instanceof ZodType) {
     return parser.safeParse({ ...req.params, ...req.body });
   }
