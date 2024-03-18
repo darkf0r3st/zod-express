@@ -23,7 +23,12 @@ jobs:
         with:
           node-version: 18
           registry-url: https://registry.npmjs.org/
-      - run: pnpm install
-      - run: pnpm publish --tag ${{ inputs.tag }}
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 8
+      - name: Install dependencies
+        run: pnpm install
+      - name: Publish
+        run: pnpm publish --tag ${{ inputs.tag }}
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_KEY}}
