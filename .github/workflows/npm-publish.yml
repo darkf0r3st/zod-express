@@ -29,6 +29,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install
       - name: Publish
-        run: pnpm publish --tag ${{ inputs.tag }}
+        run: pnpm publish --tag ${{ inputs.tag }} --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_KEY}}
