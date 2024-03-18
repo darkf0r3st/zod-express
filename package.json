@@ -1,7 +1,7 @@
 {
-  "name": "zod-express-lite",
-  "version": "1.0.0",
-  "description": "",
+  "name": "@shaharke/zod-express",
+  "version": "0.1.0",
+  "description": "Express middleware for input validation and parsing using [Zod](https://zod.dev).",
   "main": "index.js",
   "scripts": {
     "test": "jest",
@@ -11,7 +11,16 @@
   "bugs": {
     "url": "https://github.com/bobrowadam/zod-express-lite/issues"
   },
-  "author": "",
+  "author": {
+    "name": "Adam Bobrow",
+    "url": "https://github.com/bobrowadam"
+  },
+  "contributors": [
+    {
+      "name": "Shahar Kedar",
+      "url": "https://github.com/shaharke"
+    }
+  ],
   "license": "MIT",
   "devDependencies": {
     "@tsconfig/node18": "18.2.2",
