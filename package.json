@@ -1,6 +1,6 @@
 {
   "name": "@shaharke/zod-express",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Express middleware for input validation and parsing using [Zod](https://zod.dev).",
   "main": "index.js",
   "scripts": {
