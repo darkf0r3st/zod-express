@@ -28,6 +28,8 @@ jobs:
           version: 8
       - name: Install dependencies
         run: pnpm install
+      - name: Build
+        run: pnpm run build
       - name: Publish
         run: pnpm publish --tag ${{ inputs.tag }} --access public
         env:
