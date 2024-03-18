@@ -135,3 +135,36 @@ describe('Parsing of path parameters', () => {
   });
 
 });
+
+describe('Parsing of query parameters', () => {
+  beforeAll(async () => {
+    shutdownServer = await initServer([queryParamsRoutes], serverConfig);
+  });
+
+  afterAll(async () => {
+    await shutdownServer();
+  });
+
+  const queryParamsRoutes = (app: Application) => {
+    const schema = z.object({
+      name: z.string(),
+      gender: z.enum(['male', 'female']),
+    });
+    type User = z.infer<typeof schema>;
+
+    app.post('/query-params', parsingMiddleware(async (user: User) => {
+      return user.gender;
+    }, schema));
+  };
+
+  it('Should return 200', async () => {
+    const response = await testClient.post('/query-params?gender=male', { name: 'foo' });
+    expect(response.status).toBe(200);
+  });
+
+  it('Should return 400 when the input is invalid', async () => {
+    const response = await testClient.post('/query-params?gender=bar', { name: 'foo' },
+      { validateStatus: (status) => status === 400 });
+    expect(response.status).toBe(400);
+  });
+});

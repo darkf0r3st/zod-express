@@ -61,7 +61,7 @@ function _validateParser(parser: ZodType | CustomParsingFunction<unknown> | unde
 
 async function _parseRequest<T>(parser: ZodType<T> | CustomParsingFunction<T>, req: Request): Promise< SafeParseReturnType<unknown, T>> {
   if (parser instanceof ZodType) {
-    return parser.safeParse({ ...req.params, ...req.body });
+    return parser.safeParse({ ...req.params, ...req.body, ...req.query });
   }
   return parser(req);
 }
