@@ -20,7 +20,10 @@
     "url": "https://github.com/bobrowadam/zod-express/issues"
   },
   "scripts": {
-    "test": "vitest run --coverage",
+    "test:unit": "vitest run --coverage",
+    "test:lint": "pnpm run lint",
+    "test:compile": "tsc --noEmit",
+    "test": "pnpm run test:unit && pnpm run test:lint && pnpm run test:compile",
     "build": "tsup && attw --pack",
     "lint": "./node_modules/.bin/eslint ."
   },
