@@ -3,8 +3,8 @@
   "version": "0.1.4",
   "description": "Express middleware for input validation and parsing using [Zod](https://zod.dev).",
   "scripts": {
-    "test": "jest",
-    "build": "./node_modules/.bin/tsc",
+    "test": "vitest run --coverage",
+    "build": "tsup && attw --pack",
     "lint": "./node_modules/.bin/eslint ."
   },
   "bugs": {
@@ -20,6 +20,7 @@
       "url": "https://github.com/shaharke"
     }
   ],
+  "type": "module",
   "license": "MIT",
   "types": "dist/index.d.ts",
   "main": "dist/index.js",
@@ -29,16 +30,22 @@
       "import": {
         "types": "./dist/index.d.ts",
         "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
       }
     }
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "0.15.2",
     "@tsconfig/node18": "18.2.2",
     "@types/express": "4.17.21",
     "@types/jest": "29.5.12",
     "@types/lodash": "4.17.0",
     "@typescript-eslint/eslint-plugin": "7.2.0",
     "@typescript-eslint/parser": "7.2.0",
+    "@vitest/coverage-istanbul": "1.4.0",
     "axios": "^1.6.7",
     "eslint": "latest",
     "eslint-config-airbnb-base": "15.0.0",
@@ -46,8 +53,10 @@
     "express": "4.18.3",
     "jest": "29.7.0",
     "ts-jest": "29.1.2",
+    "tsup": "8.0.2",
     "typescript": "5.4.2",
     "typescript-eslint-language-service": "5.0.5",
+    "vitest": "1.4.0",
     "zod": "3.22.4"
   },
   "dependencies": {

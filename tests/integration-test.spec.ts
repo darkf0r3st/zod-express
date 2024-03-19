@@ -3,6 +3,7 @@ import { initServer } from  './test-server';
 import { parsingMiddleware } from '../src/zodExpressLite';
 import { Application, Request } from 'express';
 import z from 'zod';
+import { describe, it, expect, afterAll, beforeAll } from 'vitest';
 
 const serverConfig = {
   port: 3039
