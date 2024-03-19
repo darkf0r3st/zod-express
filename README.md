@@ -14,7 +14,7 @@ while also handling errors in a consistent manner.
 To use this middleware, ensure you have Express and Zod installed in your project. If not, you can install them using npm:
 
 ```zsh
-npm install zod-express-lite
+npm install @shaharke/zod-express
 ```
 
 ## Usage
