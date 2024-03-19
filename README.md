@@ -24,7 +24,7 @@ For a route that requires input validation:
 
 ```typescript
 import express from 'express';
-import { parsingMiddleware } from 'zod-express-lite';
+import { parsingMiddleware } from '@shaharke/zod-express';
 import { z } from 'zod';
 
 const app = express();
@@ -51,7 +51,7 @@ You can also use a custom validation function to handle more complex validation 
 
 ```typescript
 import express from 'express';
-import { parsingMiddleware } from 'zod-express-lite';
+import { parsingMiddleware } from '@shaharke/zod-express';
 import { z } from 'zod';
 
 const app = express();
@@ -78,7 +78,7 @@ For a simple route that doesn't require input parsing:
 
 ```typescript
 import express from 'express';
-import { parsingMiddleware } from 'zod-express-lite';
+import { parsingMiddleware } from '@shaharke/zod-express';
 import { z } from 'zod';
 
 const app = express();

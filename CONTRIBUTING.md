@@ -4,7 +4,7 @@ Please be aware of the [Code of conduct](CODE_OF_CONDUCT.md).
 
 ### You found a bug
 
-Please [create a bug issue](https://github.com/bobrowadam/zod-express-lite/issues/new/choose).
+Please [create a bug issue](https://github.com/bobrowadam/zod-express/issues/new/choose).
 
 ### You wanna make it yourself
 

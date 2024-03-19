@@ -1,15 +1,7 @@
 {
   "name": "@shaharke/zod-express",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Express middleware for input validation and parsing using [Zod](https://zod.dev).",
-  "scripts": {
-    "test": "vitest run --coverage",
-    "build": "tsup && attw --pack",
-    "lint": "./node_modules/.bin/eslint ."
-  },
-  "bugs": {
-    "url": "https://github.com/bobrowadam/zod-express-lite/issues"
-  },
   "author": {
     "name": "Adam Bobrow",
     "url": "https://github.com/bobrowadam"
@@ -20,6 +12,18 @@
       "url": "https://github.com/shaharke"
     }
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bobrowadam/zod-express"
+  },
+  "bugs": {
+    "url": "https://github.com/bobrowadam/zod-express/issues"
+  },
+  "scripts": {
+    "test": "vitest run --coverage",
+    "build": "tsup && attw --pack",
+    "lint": "./node_modules/.bin/eslint ."
+  },
   "type": "module",
   "license": "MIT",
   "types": "dist/index.d.ts",
