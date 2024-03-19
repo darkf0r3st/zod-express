@@ -2,7 +2,6 @@
   "name": "@shaharke/zod-express",
   "version": "0.1.2",
   "description": "Express middleware for input validation and parsing using [Zod](https://zod.dev).",
-  "main": "index.js",
   "scripts": {
     "test": "jest",
     "build": "./node_modules/.bin/tsc",
@@ -22,6 +21,16 @@
     }
   ],
   "license": "MIT",
+  "types": "dist/index.d.ts",
+  "module": "dist/index.js",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    }
+  },
   "devDependencies": {
     "@tsconfig/node18": "18.2.2",
     "@types/express": "4.17.21",
