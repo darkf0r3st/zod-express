@@ -1,6 +1,6 @@
 {
   "name": "@shaharke/zod-express",
-  "version": "0.1.6",
+  "version": "0.2.0",
   "description": "Express middleware for input validation and parsing using [Zod](https://zod.dev).",
   "author": {
     "name": "Adam Bobrow",
