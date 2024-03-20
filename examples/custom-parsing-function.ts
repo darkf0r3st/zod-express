@@ -1,6 +1,6 @@
 import express, { Request } from 'express';
 import z from 'zod';
-import { parsingMiddleware } from '../src/zodExpressLite';
+import { parsingMiddleware } from '../src/zodExpress';
 
 /**
  * This is a basic example of how to use the parsingMiddleWare function.
