@@ -1,6 +1,5 @@
 name: Test
-on:
-  push:
+on: ["push", "pull_request"]
 jobs:
   Test:
     runs-on: ubuntu-20.04
@@ -25,3 +24,8 @@ jobs:
 
     - name: Run tests
       run: pnpm run test
+
+    - name: Upload coverage to Coveralls
+      uses: coverallsapp/github-action@v2
+      env:
+        COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
