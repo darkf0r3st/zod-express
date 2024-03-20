@@ -28,7 +28,7 @@ const sanityTestRouteDefinition = (app: Application) => {
   app.post('/users', parsingMiddleware(createUser, User));
 };
 
-describe('Express end to end test', () => {
+describe('Sanity tests', () => {
   beforeAll(async () => {
     shutdownServer = await initServer([sanityTestRouteDefinition], serverConfig);
   });
@@ -47,6 +47,29 @@ describe('Express end to end test', () => {
       { validateStatus: (status) => status === 400 });
     expect(response.status).toBe(400);
   });
+});
+
+describe('Routes with no input parsing', () => {
+
+  beforeAll(async () => {
+    shutdownServer = await initServer([noParsingRoutes], serverConfig);
+  });
+
+  afterAll(async () => {
+    await shutdownServer();
+  });
+
+  const noParsingRoutes = (app: Application) => {
+    app.post('/no-parsing', parsingMiddleware(async () => {
+      return { age: 30 };
+    }));
+  };
+
+  it('Should return 200', async () => {
+    const response = await testClient.post('/no-parsing');
+    expect(response.status).toBe(200);
+  });
+
 });
 
 describe('Unexpected error in handler', () => {
@@ -69,6 +92,33 @@ describe('Unexpected error in handler', () => {
     const response = await testClient.post('/error', { name: 'John', id: '12323232' },
       { validateStatus: (status) => status === 500 });
     expect(response.status).toBe(500);
+  });
+});
+
+describe('Custom unexpected error handler', () => {
+
+  beforeAll(async () => {
+    shutdownServer = await initServer([customErrorHandlerRoutes], serverConfig);
+  });
+
+  afterAll(async () => {
+    await shutdownServer();
+  });
+
+  const customErrorHandlerRoutes = (app: Application) => {
+    app.post('/custom-error-handler', parsingMiddleware(() => {
+      throw new Error('This is an unexpected error');
+    }, undefined, (error, req, res) => {
+      res.status(503).send('This is a custom error handler');
+    }));
+  };
+
+  it('Should return 503', async () => {
+    const response = await testClient.post(
+      '/custom-error-handler',
+      { name: 'John', id: '12323232' },
+      { validateStatus: (status) => status === 503 });
+    expect(response.status).toBe(503);
   });
 });
 
