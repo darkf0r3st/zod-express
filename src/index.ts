@@ -1,1 +1,1 @@
-export * from './zodExpressLite';
+export * from './zodExpress';

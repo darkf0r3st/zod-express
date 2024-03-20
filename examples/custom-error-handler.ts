@@ -1,6 +1,6 @@
 import express from 'express';
 import z from 'zod';
-import { parsingMiddleware } from '../src/zodExpressLite';
+import { parsingMiddleware } from '../src/zodExpress';
 
 const app = express();
 app.use(express.json());
