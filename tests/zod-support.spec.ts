@@ -1,4 +1,4 @@
-import { parsingMiddleware } from '../src';
+import { parsingMiddleware } from '../src/zodExpress';
 import { z } from 'zod';
 import { describe, it } from 'vitest';
 

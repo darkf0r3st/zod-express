@@ -1,8 +1,10 @@
 import { Request, RequestHandler, Response } from 'express';
 import { SafeParseReturnType, ZodType, ZodTypeDef } from 'zod';
 
-type UnexpectedErrorHandler = (error: Error, req: Request, res: Response) => void
-type CustomParsingFunction<O> = (request: Request) => SafeParseReturnType<unknown, O>;
+export type UnexpectedErrorHandler = (error: Error, req: Request, res: Response) => void
+export type CustomParsingFunction<O> = (request: Request) => SafeParseReturnType<unknown, O>;
+export type PartialMiddleware = <O, T>(fn: (input?: T) => Promise<O>,
+                                       parser?: ZodType<T, ZodTypeDef, unknown> | CustomParsingFunction<T>) => RequestHandler;
 
 export function parsingMiddleware<T, O>(
   fn: (input: T) => Promise<O>,
@@ -20,6 +22,12 @@ export function parsingMiddleware<O>(
   fn: () => Promise<O>,
   parser?: undefined,
   unexpectedErrorHandler?: UnexpectedErrorHandler
+): RequestHandler;
+
+export function parsingMiddleware<T, O>(
+  fn: (input?: T) => Promise<O>,
+  parser: ZodType<T, ZodTypeDef, unknown> | undefined | CustomParsingFunction<T>,
+  unexpectedErrorHandler?: UnexpectedErrorHandler,
 ): RequestHandler;
 
 export function parsingMiddleware<T, O>(
@@ -65,3 +73,4 @@ async function _parseRequest<T>(parser: ZodType<T, ZodTypeDef, unknown> | Custom
   }
   return parser(req);
 }
+

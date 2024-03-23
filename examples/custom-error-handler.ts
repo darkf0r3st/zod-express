@@ -1,6 +1,6 @@
 import express from 'express';
 import z from 'zod';
-import { parsingMiddleware } from '../src/zodExpress';
+import { zodx } from '../src';
 
 const app = express();
 app.use(express.json());
@@ -14,11 +14,11 @@ async function throwAnError(dummy: Dummy): Promise<string> {
 }
 
 /**
- * By default, the parsingMiddleWare function will send a 500 status code
+ * By default, the zodx function will send a 500 status code
  * on an unexpected error. You can override this behavior by providing an
  * unexpectedErrorHandler function.
  */
-app.post('/get-user-name', parsingMiddleware(throwAnError, DummySchema,
+app.post('/get-user-name', zodx(throwAnError, DummySchema,
   (error, req, res) => {
     res.status(500).send({ message: error.message });
   }));
