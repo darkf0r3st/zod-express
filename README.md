@@ -29,7 +29,7 @@ For a route that requires input validation:
 
 ```typescript
 import express from 'express';
-import { parsingMiddleware } from '@shaharke/zod-express';
+import { zodx } from '@shaharke/zod-express';
 import { z } from 'zod';
 
 const app = express();
@@ -41,7 +41,7 @@ const InputSchema = z.object({
 });
 type Input = z.infer<typeof InputSchema>;
 
-app.post('/your-route', parsingMiddleware(async (input: Input) => {
+app.post('/your-route', zodx(async (input: Input) => {
   // Your logic here, with input being already validated
   return { message: `Received: ${input.foo}` };
 }, InputSchema));
@@ -56,7 +56,7 @@ You can also use a custom validation function to handle more complex validation 
 
 ```typescript
 import express from 'express';
-import { parsingMiddleware } from '@shaharke/zod-express';
+import { zodx } from '@shaharke/zod-express';
 import { z } from 'zod';
 
 const app = express();
@@ -72,7 +72,7 @@ const customValidation = (req: Request) => {
   return InputSchema.safeParse(req.body);
 };
 
-app.post('/your-route', parsingMiddleware(async (input: Input) => {
+app.post('/your-route', zodx(async (input: Input) => {
   return { message: `Received: ${input.foo}` };
 }, customValidation));
 ```
@@ -83,14 +83,14 @@ For a simple route that doesn't require input parsing:
 
 ```typescript
 import express from 'express';
-import { parsingMiddleware } from '@shaharke/zod-express';
+import { zodx } from '@shaharke/zod-express';
 import { z } from 'zod';
 
 const app = express();
 
 app.use(express.json()); // for parsing application/json
 
-app.post('/your-route', parsingMiddleware(async () => {
+app.post('/your-route', zodx(async () => {
   // Your logic here
   return { message: 'Success!' };
 }));
@@ -110,7 +110,43 @@ const errorHandler = (error: Error, req: Request, res: Response) => {
   res.status(500).send('An unexpected error occurred');
 };
 
-// Use it as the third argument in parsingMiddleware
-app.post('/your-route', parsingMiddleware(handler, schema, errorHandler));
+// Use it as the third argument in zodx
+app.post('/your-route', zodx(handler, schema, errorHandler));
 ```
 
+### Global Error Handler
+
+You can configure a global error handler for all routes that use zod-express by calling
+the `config` function:
+
+```typescript
+import { config, zodx } from '@shaharke/zod-express';
+
+config({
+  errorHandler: (error: Error, req: Request, res: Response) => {
+    console.error('Unexpected error:', error);
+    res.status(503).send('An unexpected error occurred');
+  },
+});
+
+app.post('/your-route', zodx(handler, schema));
+```
+
+Setting a global error handler does not prevent you from passing a custom error handler to a specific route as described above.
+
+### Scoped Error Handler
+
+You can also scope the default error handler to a specific middleware factory instance:
+
+```typescript
+import { config } from '@shaharke/zod-express';
+
+const zodx = factory({
+  errorHandler: (error: Error, req: Request, res: Response) => {
+    console.error('Unexpected error:', error);
+    res.status(503).send('An unexpected error occurred');
+  },
+});
+
+app.post('/your-route', zodx(handler, schema));
+```

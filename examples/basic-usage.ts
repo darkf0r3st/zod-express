@@ -1,9 +1,9 @@
 import express from 'express';
 import z from 'zod';
-import { parsingMiddleware } from '../src/zodExpress';
+import { zodx } from '../src';
 
 /**
- * This is a basic example of how to use the parsingMiddleWare function.
+ * This is a basic example of how to use the zodx function.
  */
 
 const app = express();
@@ -26,11 +26,11 @@ async function getUserName(user: User): Promise<string> {
 }
 
 /**
- * Add a route to the express app that uses the parsingMiddleWare function
- * to declare a handler. parsingMiddleWare accepts a function and a schema.
+ * Add a route to the express app that uses the zodx function
+ * to declare a handler. zodx accepts a function and a schema.
  * It will parse the request body and pass it to the function if it matches the schema.
  */
-app.post('/get-user-name', parsingMiddleware(getUserName, UserSchema));
+app.post('/get-user-name', zodx(getUserName, UserSchema));
 
 
 

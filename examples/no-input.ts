@@ -1,5 +1,5 @@
 import express from 'express';
-import { parsingMiddleware } from '../src/zodExpress';
+import { zodx } from '../src';
 
 const app = express();
 app.use(express.json());
@@ -10,9 +10,9 @@ async function getAllUsers(): Promise<string[]> {
 
 /**
  * In some cases your handlers may not require any input. In this case, you can
- * use the parsingMiddleWare function without a schema
+ * use the zodx function without a schema
  */
-app.post('/get-user-name', parsingMiddleware(getAllUsers));
+app.post('/get-user-name', zodx(getAllUsers));
 
 
 
