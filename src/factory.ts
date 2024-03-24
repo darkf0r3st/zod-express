@@ -1,4 +1,4 @@
-import { CustomParsingFunction, parsingMiddleware, PartialMiddleware, UnexpectedErrorHandler } from './zodExpress';
+import { CustomParsingFunction, parsingMiddleware, PartialMiddleware, UnexpectedErrorHandler } from './middleware';
 import { ZodType, ZodTypeDef } from 'zod';
 import { RequestHandler } from 'express';
 

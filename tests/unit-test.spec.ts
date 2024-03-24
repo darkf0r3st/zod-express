@@ -1,4 +1,4 @@
-import { parsingMiddleware } from '../src/zodExpress';
+import { parsingMiddleware } from '../src/middleware';
 import { describe, expect, it } from 'vitest';
 
 describe('Passing an invalid parser', () => {

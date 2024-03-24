@@ -3,7 +3,7 @@ import { initServer } from './test-server';
 import { Application } from 'express';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { config, zodx, factory } from '../src';
-import { PartialMiddleware } from '../src/zodExpress';
+import { PartialMiddleware } from '../src/middleware';
 
 const serverConfig = {
   port: 3040
