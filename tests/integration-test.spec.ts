@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { initServer } from './test-server';
-import { parsingMiddleware } from '../src/zodExpress';
+import { parsingMiddleware } from '../src/middleware';
 import { Application, Request } from 'express';
 import z from 'zod';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
