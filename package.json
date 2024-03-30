@@ -1,5 +1,5 @@
 {
-  "name": "@shaharke/zod-express",
+  "name": "@darkf0r3st/zod-express",
   "version": "0.3.0",
   "description": "Express middleware for input validation and parsing using [Zod](https://zod.dev).",
   "author": {
@@ -14,10 +14,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/bobrowadam/zod-express"
+    "url": "https://github.com/darkf0r3st/zod-express"
   },
   "bugs": {
-    "url": "https://github.com/bobrowadam/zod-express/issues"
+    "url": "https://github.com/darkf0r3st/zod-express/issues"
   },
   "scripts": {
     "test:unit": "vitest run --coverage",

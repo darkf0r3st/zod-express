@@ -1,7 +1,7 @@
 # Express Middleware with Zod Parsing
 
-![CI](https://github.com/bobrowadam/zod-express/actions/workflows/test.yml/badge.svg)
-![Coverage Status](https://coveralls.io/repos/github/bobrowadam/zod-express/badge.svg?branch=master)
+![CI](https://github.com/darkf0r3st/zod-express/actions/workflows/test.yml/badge.svg)
+![Coverage Status](https://coveralls.io/repos/github/darkf0r3st/zod-express/badge.svg?branch=master)
 ![npm release](https://img.shields.io/npm/v/@shaharke/zod-express.svg?color=green25&label=latest)
 ![License](https://img.shields.io/npm/l/@shaharke/zod-express.svg?color=green25)
 
