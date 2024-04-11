@@ -2,8 +2,8 @@
 
 ![CI](https://github.com/darkf0r3st/zod-express/actions/workflows/test.yml/badge.svg)
 ![Coverage Status](https://coveralls.io/repos/github/darkf0r3st/zod-express/badge.svg?branch=master)
-![npm release](https://img.shields.io/npm/v/@shaharke/zod-express.svg?color=green25&label=latest)
-![License](https://img.shields.io/npm/l/@shaharke/zod-express.svg?color=green25)
+![npm release](https://img.shields.io/npm/v/@darkf0r3st/zod-express.svg?color=green25&label=latest)
+![License](https://img.shields.io/npm/l/@darkf0r3st/zod-express.svg?color=green25)
 
 This module provides a powerful Express middleware for input validation and parsing using [Zod](https://zod.dev). 
 It simplifies the process of ensuring that your route handlers receive correctly typed and validated data, 
